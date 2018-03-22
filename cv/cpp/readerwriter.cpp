@@ -33,10 +33,10 @@ public:
     {
         __synchronized__ ;
 
-    	while (writecount) { // there is a writer
-    		canread.wait();
+        while (writecount) { // there is a writer
+            canread.wait();
         }
-    	readcount++;
+        readcount++;
         // notify canread here if you don't use canread.notifyAll() below
     }
     
@@ -44,26 +44,26 @@ public:
     {
         __synchronized__ ;
 
-    	readcount--;
-    	if (readcount == 0) // last reader going out
-    		canwrite.notify();
+        readcount--;
+        if (readcount == 0) // last reader going out
+            canwrite.notify();
     }
     
     void start_write()
     {
         __synchronized__ ;
 
-    	while (readcount || writecount) {
-    		canwrite.wait();
-    	}
-    	writecount++;
+        while (readcount || writecount) {
+            canwrite.wait();
+        }
+        writecount++;
     }
     
     void finish_write()
     {
         __synchronized__ ;
 
-    	writecount--;
+        writecount--;
         // there might be writers and readers, inform them
         canread.notifyAll();
         canwrite.notify();
@@ -75,49 +75,49 @@ ReaderWriter rwmon; // global reader writer monitor
 
 void *readerwriter(void *p) 
 {
-	int i;
-	char *name = (char *) p;
+    int i;
+    char *name = (char *) p;
 
-	for (i = 0; i < 10; i++) {
-		usleep(WAIT/100);	/* wait for a while */
-		if (rand() % 10 > 4) {  /* reader */
+    for (i = 0; i < 10; i++) {
+        usleep(WAIT/100);    /* wait for a while */
+        if (rand() % 10 > 4) {  /* reader */
             rwmon.start_read();
 
-	        printf("%s started reading\n", p);
-	        usleep(rand()% WAIT);
+            printf("%s started reading\n", p);
+            usleep(rand()% WAIT);
 
-			rwmon.finish_read();
-	        printf("%s finished reading\n", p);
-		} else {
-			rwmon.start_write();
+            rwmon.finish_read();
+            printf("%s finished reading\n", p);
+        } else {
+            rwmon.start_write();
 
-	        printf("%s started writing\n", p);
-	        usleep(rand()% WAIT);
+            printf("%s started writing\n", p);
+            usleep(rand()% WAIT);
 
             rwmon.finish_write();
-	        printf("%s finished writing\n", p);
+            printf("%s finished writing\n", p);
         }
-	}
-	return 0;
+    }
+    return 0;
 
 }
 
 
 
 int main() {
-	pthread_t ptr,ctr;
-	const char *names[] = { "A", "B", "C", "D"};
-	pthread_t tids[4];
+    pthread_t ptr,ctr;
+    const char *names[] = { "A", "B", "C", "D"};
+    pthread_t tids[4];
 
-	int i;
+    int i;
 
     srand(time(NULL));
 
-	for (i = 0 ; i < 4; i++) 
-		pthread_create(tids+i, NULL, readerwriter, (void *) names[i]);
+    for (i = 0 ; i < 4; i++) 
+        pthread_create(tids+i, NULL, readerwriter, (void *) names[i]);
 
-	for (i = 0 ; i < 4; i++) 
-		pthread_join(tids[i], NULL);
+    for (i = 0 ; i < 4; i++) 
+        pthread_join(tids[i], NULL);
 
-	return 0;
+    return 0;
 }

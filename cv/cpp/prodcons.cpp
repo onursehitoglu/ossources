@@ -18,49 +18,49 @@ class ProdCons:public Monitor {
     int max;
 
     struct list {
-	    int val;
-	    struct list *next;
+        int val;
+        struct list *next;
     } *head , *tail;
 
-	void addtolist(int v) {
-		struct list *p = new list;
-	
-		p->val = v;
-		p->next = NULL;
-	
-		if (head == NULL)
-			head = tail = p;	
-		else {
-			tail->next = p;
-			tail = p;
-		}
-		count++;
-	} 	
-	
-	int getfromlist() {
-		int v;
-		struct list *p;
-		if (head == NULL) {
-			fprintf(stderr, "runtime error\n");
-			exit(1);
-		}
-		v = head->val;
-		p = head;
-		head = head->next;
-		delete p;
-		count--;
-		return v;
-	}
-	int empty() { return head == NULL ;}
-	int full() { return count >= max ;}
-	
-	void dump() {
-		struct list *p;
-		printf("[");
-		for (p = head; p != NULL; p = p->next)
-			printf("%d ", p->val);
-		printf("]\n");
-	}
+    void addtolist(int v) {
+        struct list *p = new list;
+    
+        p->val = v;
+        p->next = NULL;
+    
+        if (head == NULL)
+            head = tail = p;    
+        else {
+            tail->next = p;
+            tail = p;
+        }
+        count++;
+    }     
+    
+    int getfromlist() {
+        int v;
+        struct list *p;
+        if (head == NULL) {
+            fprintf(stderr, "runtime error\n");
+            exit(1);
+        }
+        v = head->val;
+        p = head;
+        head = head->next;
+        delete p;
+        count--;
+        return v;
+    }
+    int empty() { return head == NULL ;}
+    int full() { return count >= max ;}
+    
+    void dump() {
+        struct list *p;
+        printf("[");
+        for (p = head; p != NULL; p = p->next)
+            printf("%d ", p->val);
+        printf("]\n");
+    }
 
 public:
     ProdCons(int m):notfull(this), notempty(this) {
@@ -96,39 +96,39 @@ public:
 void *producer(void *p) 
 {
     ProdCons *pcmon = (ProdCons *) p;
-	int i;
+    int i;
 
-	for (i = 0; i < 20; i++) {
-		usleep(PWAIT);
+    for (i = 0; i < 20; i++) {
+        usleep(PWAIT);
         pcmon->enqueue(i);
-		printf("INS -> %d\n", i);
-	}
-	return 0;
+        printf("INS -> %d\n", i);
+    }
+    return 0;
 
 }
 
 void *consumer(void *p)
 {
     ProdCons *pcmon = (ProdCons *) p;
-	int i;
+    int i;
 
-	for (i = 0; i < 20; i++) {
-		usleep(CWAIT);
-		printf("CONS <- %d\n", pcmon->dequeue() );
-	}
+    for (i = 0; i < 20; i++) {
+        usleep(CWAIT);
+        printf("CONS <- %d\n", pcmon->dequeue() );
+    }
 
-	return 0;
+    return 0;
 }
 
 
 int main() {
-	pthread_t ptr,ctr;
+    pthread_t ptr,ctr;
     ProdCons pcmon(10);
 
-	pthread_create(&ptr, NULL, producer, (void *) &pcmon);
-	pthread_create(&ctr, NULL, consumer, (void *) &pcmon);
-	pthread_join(ptr, NULL);
-	pthread_join(ctr, NULL);
+    pthread_create(&ptr, NULL, producer, (void *) &pcmon);
+    pthread_create(&ctr, NULL, consumer, (void *) &pcmon);
+    pthread_join(ptr, NULL);
+    pthread_join(ctr, NULL);
 
-	return 0;
+    return 0;
 }
