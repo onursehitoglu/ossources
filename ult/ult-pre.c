@@ -109,7 +109,6 @@ ucontext_t *initthread(ucontext_t *base) {
 /*! \desc SIGALARM handle working as a scheduler
 */
 void preemption(int sig) {
-	signal(SIGALRM, preemption);
 	printf("preempt\n");
 	schedule();
 }
