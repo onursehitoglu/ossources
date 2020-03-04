@@ -2,13 +2,14 @@ CSOURCES = $(wildcard *.c)
 CTARGETS = $(CSOURCES:%.c=%)
 CPPSOURCES += $(wildcard *.cpp)
 CPPTARGETS = $(CPPSOURCES:%.cpp=%)
+CFLAGS = -g
 
 TARGETS = $(CTARGETS) $(CPPTARGETS)
 
 all: $(TARGETS)
 
 % : %.c
-	gcc -o $@ $< 
+	gcc -o $@ $(CFLAGS) $< 
 
 
 clean:

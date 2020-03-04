@@ -41,8 +41,6 @@ void dellist(struct dllist **head, struct dllist *item)
 		item->next->prev = item->prev;
 	if (item == *head)
 		*head = item->next;
-		
-	free(item);
 }
 
 #define forallitems(lst, ptr) \
@@ -78,8 +76,10 @@ void threadexit() {
 		else
 			nthread = tlist;
 	
-	/* TODO: free context here  */
 	dellist(&tlist, curthread);
+    free(curthread->context->uc_stack.ss_sp);
+    free(curthread->context);
+    free(curthread);
 	curthread = nthread;
 	if (curthread != NULL) 
 		setcontext(curthread->context);
@@ -109,7 +109,7 @@ ucontext_t *initthread(ucontext_t *base) {
 /*! \desc SIGALARM handle working as a scheduler
 */
 void preemption(int sig) {
-	printf("preempt\n");
+	printf("preempt %p \n",curthread->context);
 	schedule();
 }
 

@@ -44,7 +44,7 @@ void server(int p1[], int p2[])
 			if (r == 0)  	/* EOF */
 				open[0] = 0;
 			else
-				printf("%d: %s\n", 1, mess);
+				printf("%d: %s\n", 0, mess);
 
 		}
 
@@ -54,7 +54,7 @@ void server(int p1[], int p2[])
 			if ( r == 0 )  /* EOF */
 				open[1] = 0;
 			else
-				printf("%d: %s\n", 2, mess);
+				printf("%d: %s\n", 1, mess);
 		}
 
 	}

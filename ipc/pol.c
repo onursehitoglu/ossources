@@ -42,7 +42,7 @@ void server(int p1[], int p2[])
 				if (r == 0) 			/* EOF */
 					pfd[i].fd = -1;   /* ignore pollfd item if negative */
 				else
-					printf("%d: %s\n", 1, mess);
+					printf("%d: %s\n", i, mess);
 			}
 	}
 

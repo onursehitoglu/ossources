@@ -39,8 +39,6 @@ void dellist(struct dllist **head, struct dllist *item)
 		item->next->prev = item->prev;
 	if (item == *head)
 		*head = item->next;
-		
-	free(item);
 }
 
 #define forallitems(lst, ptr) \
