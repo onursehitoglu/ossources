@@ -29,18 +29,15 @@ void server(int p1[], int p2[])
 
 	while (pfd[0].fd >= 0 || pfd[1].fd >= 0) { /* one still open */
 		/* clear returned event */
-		for  (n = 0; n < 2; n++) 
-			if (pfd[n].fd >= 0)  {
-				pfd[0].revents = 0;
-				n++;
-			}
+		for  (i = 0; i < 2; n++) 
+				pfd[i].revents = 0;
 
 		poll(pfd, n, 0);  /* no timeout*/
 		for (i = 0; i < n; i++) 
 			if (pfd[i].revents && POLLIN) {
 				r = read(pfd[i].fd, mess, 40);
 				if (r == 0) 			/* EOF */
-					pfd[i].fd = -1;   /* ignore pollfd item if negative */
+					pfd[i].fd = -1;   /* poll() ignores pollfd item if fd is negative */
 				else
 					printf("%d: %s\n", i, mess);
 			}
