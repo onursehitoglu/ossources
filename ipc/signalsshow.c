@@ -7,7 +7,7 @@
 #include<signal.h>
 #include<setjmp.h>
 #include<string.h>
-#include<wait.h>
+#include<sys/wait.h>
 
 jmp_buf divzerbuf, segvbuf;
 

@@ -26,11 +26,12 @@ void server(int p1[], int p2[])
 	close(p2[1]);
 
 	/* pollfd strcture keeps: file descriptor, requested event, returned event */
+	n = 2;
 
 	while (pfd[0].fd >= 0 || pfd[1].fd >= 0) { /* one still open */
-		/* clear returned event */
-		for  (i = 0; i < 2; n++) 
-				pfd[i].revents = 0;
+		/* clear returned event 
+		for  (i = 0; i < n; i++) 
+				pfd[i].revents = 0;*/
 
 		poll(pfd, n, 0);  /* no timeout*/
 		for (i = 0; i < n; i++) 

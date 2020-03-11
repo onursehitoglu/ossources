@@ -195,6 +195,10 @@ int main(int argc, char *argv[]) {
     barberstate = malloc(nbarbers*sizeof(int));
 
 
+	
+    for (i = 0; i < nseats; i++) 
+		seatstate[i] = 0;
+
     for (i = 0; i < nbarbers; i++) {
         bids[i] = i;
         barberstate[i] = 0;
