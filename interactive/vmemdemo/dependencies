@@ -1,0 +1,4 @@
+  512  axel https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js
+  513  axel https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.14/lodash.js
+  514  axel https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.4.0/backbone.js
+  516  history |grep axel >dependencies

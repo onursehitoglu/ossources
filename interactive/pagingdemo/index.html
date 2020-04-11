@@ -1,0 +1,253 @@
+<head>
+<link rel="stylesheet" href="css/ui-lightness/jquery-ui-1.9.2.custom.min.css">
+<script src="jquery.js"></script>
+<script src="jquery-ui.js"></script>
+<script src="paging.js"></script>
+<script src="pagingctrl.js"></script>
+<style>
+h2 {
+	font-family: sans,tahoma;
+}
+#frames {
+	border: solid #800000 3px;
+	display: block;
+	padding: 10px;
+	margin: 10px;
+	background: #a05050;
+	height: 100px;
+}
+.page {
+	border: solid black 2px;
+	margin: 5px;
+	padding: 5px;
+	display: inline-block;
+	background: #d0d0d0;
+	font-family: sans, tahoma;
+	font-weight: bold;
+	width: 80px;
+	height: 90px;
+	vertical-align: top;
+}
+.process .time {
+	font-weight: normal;
+}
+#toolbar {
+	display: inline-block;
+}
+#accesslist {
+	border: solid #0080a0 3px;
+	display: inline-block;
+	margin: 5px;
+	padding: 5px;
+	background: #e0e0ff;
+}
+#policysummary {
+	border: solid #00a080 3px;
+	display: inline-block;
+	margin: 5px;
+	padding: 5px;
+	background: #d0ffd0;
+	font-family: sans,tahoma;
+}
+#scoreboard div {
+	border: solid #a0a0ff 3px;
+	display: inline-block;
+	background-color:#e0e0ff; 
+	margin: 10px;
+	padding: 5px;
+	text-align: center;
+}
+#scoreboard span {
+	font-size: 160%;
+}
+.ui-effects-transfer {
+    border: 1px solid black;
+}
+#logdiv {
+      border: solid #202020 3px;
+      display: inline-block;
+      margin: 5px;
+      padding: 10px;
+}
+#menu {
+	display: inline-block;
+}
+.free {
+      background: #808080;
+}
+.nonfree {
+      background: #e0e0e0;
+}
+.page .info {
+	height: 30px;
+	margin: 5px;
+}
+.page .nocursor {
+	width: 32px;
+	height: 32px;
+}
+.page .cursor {
+	width: 32px;
+	height: 32px;
+	background-image: url(css/arrow.png);
+}
+.access {
+	border: solid black 1px;
+	margin: 5px;
+	padding: 5px;
+	background: #a0a0f0;
+	display: inline-block;
+}
+.current {
+	background: #f0f0f0;
+}
+.pagefault {
+	background: #f0a0a0;
+}
+.nopagefault {
+	background: #a0f0a0;
+}
+.modified {
+	border-color: #ff4040;
+}
+#history {
+	border-collapse: collapse;
+}
+#history  td {
+	border: solid black 1px;
+	border-spacing: 0px;
+	padding: 3px;
+} 
+#history th {
+	border: solid black 1px;
+	border-bottom: solid black 2px;
+	background-color: #e0e0e0;
+}
+#pageaccess {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+}
+</style>
+</head>
+
+<body>
+<script>
+$(function() {
+	$("#slower").button({icons:{primary:"ui-icon-minusthick"},
+			     text: false});
+	$("#playpause").button({icons:{primary:"ui-icon-play"},
+			     text: false});
+	$("#singlestep").button({icons:{primary:"ui-icon-seek-next"},
+			     text: false});
+	$("#faster").button({icons:{primary:"ui-icon-plusthick"},
+			     text: false});
+	$("#restart").button({icons:{primary:"ui-icon-refresh"},
+			     text: false});
+
+	$("#pageaccess h2").click(function () { $("#pageaccess textarea").toggle();});
+	var vpageaccess = function () { 
+		return $("#pageaccess textarea").val()
+			 	.split(/[ \n]+/)
+				.filter(function (s) { return s.length > 1;})
+				.map(function (s) {
+					return [parseInt(s[0]),
+						(s[1].match(/w/i))?true:false];
+					})
+/*
+		return [
+[8,false],
+[5,false],
+[2,false],
+[6,false],
+[0,false],
+[3,false],
+[6,false],
+[7,false],
+[7,false],
+[8,false],
+[4,false],
+[1,false],
+[5,false],
+[4,false],
+[3,false],
+[0,false],
+[2,false],
+[5,false]];
+		return [[7,false], [1,false], [10,false],
+			[4,false], [4,false], [7,true],
+			[8,false], [7,true], [3,true],
+			[5,false], [7,true], [2,true],
+			[7,false], [10,true], [7,false],
+			[8,true], [0,false], [7,true],
+			[10,false], [8,true], [7,false],
+			[1,false], [2,true], [7,false],
+			[8,false], [1,true], [1,true],
+			[5,true], [7,true], [3,false],
+			[3,false], [4,true], [1,false]];
+*/
+	}; 
+	mem_load(vpageaccess,4);
+});
+</script>
+
+<ul id="menu">
+	<li><a href="#">Policy</a>
+	    <ul id="policylist">
+	    </ul>
+	</li>
+</ul>
+
+<table>
+<tr><td>
+<h2>Page Frames</h2>
+<div id="frames" class="ui-corner-all"> 
+</div>
+<div  id="pageaccess" class="ui-corner-all">
+<h2>Page access (input)</h2>
+<textarea>
+7r 1r 10r 4r 4r 7w 8r 7w 3r 5r 7w 2w 7r
+10w 7r 8w 0r 7w 1r 2w 7r 8r 1w 1w 5w 7w 
+3r 3r  4w 1r
+</textarea>
+</div>
+
+<h2>Virtual page accesses</h2>
+<div id="accesslist" class="ui-corner-all">
+</div>
+
+<div id="scoreboard">
+<div class="ui-corner-all"><b>Time:</b> <br/><span id="time">0</span></div>
+<div class="ui-corner-all"><b>Page faults:</b><br/> <span id="pagefaults">0</span></div>
+<div class="ui-corner-all"><b>Pages Written:</b><br/> <span id="pagewrites">0</span></div>
+</div>
+<div id="toolbar" class="ui-widget-header ui-corner-all">
+<button id="slower"></button><button id="playpause"></button>
+<button id="singlestep"></button><button id="faster"></button>
+<button id="restart"></button>
+</div>
+
+<h2 id="policytitle"></h2>
+<div id="policysummary" class="ui-corner-all"></div>
+<br/>
+<h2>History</h2>
+<table id="history">
+<thead>
+<th>t</th></thead>
+<tbody>
+</body>
+</table>
+<br/>
+<div id="logdiv" class="ui-corner-all">
+<h2>Events</h2>
+<pre id="logger">
+</pre>
+</div>
+
+
+
+
+<div id="accessedit">
+</div>
+
+</body>

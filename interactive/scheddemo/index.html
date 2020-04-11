@@ -1,0 +1,239 @@
+<head>
+<link rel="stylesheet" href="css/ui-lightness/jquery-ui-1.9.2.custom.min.css">
+<script src="sched.js"></script>
+<script src="schedctrl.js"></script>
+<script src="jquery.js"></script>
+<script src="jquery-ui.js"></script>
+<style>
+h1,h2 {
+	font-family: sans,tahoma;
+	margin-top: 40px;
+}
+#cpu {
+	border: solid #800000 3px;
+	display: block;
+	padding: 10px;
+	margin: 10px;
+	background: #a05050;
+	width: 40px;
+	height: 70px;
+}
+#sleepqueue {
+	border: solid #008000 3px;
+	display: block;
+	padding: 10px;
+	margin: 10px;
+	height: 70px;
+	background: #50af50;
+}
+.process {
+	border: solid black 2px;
+	margin: 5px;
+	padding: 5px;
+	display: inline-block;
+	background: #d0d0d0;
+	font-family: sans, tahoma;
+	font-weight: bold;
+}
+.process .time {
+	font-weight: normal;
+}
+#toolbar {
+	display: inline-block;
+}
+#policy {
+	border: solid #004080 3px;
+	display: inline-block;
+	margin: 5px;
+	padding: 5px;
+	background: #80a0ff;
+	height: 70px;
+}
+#scoreboard div {
+        border: solid #a0a0ff 3px;
+        display: inline-block;
+        background-color:#e0e0ff;
+        margin: 10px;
+        padding: 5px;
+        text-align: center;
+}
+#scoreboard span {
+        font-size: 160%;
+}
+
+.ui-effects-transfer {
+    border: 1px solid black;
+}
+#logdiv {
+      border: solid #202020 3px;
+      background: #d0d0d0;
+      display: inline-block;
+      margin: 5px;
+      padding: 10px;
+}
+#menu {
+	display: inline-block;
+}
+#history {
+        border-collapse: collapse;
+	font-size: 80%;
+}
+#history td {
+        border: solid black 1px;
+        border-spacing: 0px;
+        padding: 3px;
+}
+#history td.sleep {
+	background: #50af50;
+}
+#history td.running {
+	background: #a05050;
+}
+
+#history th {
+        border: solid black 1px;
+        border-bottom: solid black 2px;
+        background-color: #e0e0e0;
+}
+#processlist {
+      border: solid #a08040 3px;
+      background: #f0f0d0;
+      display: inline-block;
+      margin: 5px;
+      padding: 10px;
+      position: absolute;
+      right: 0px;
+      top: 0px;
+}
+.prnam, .prseq, .prpri, .prarr {
+	font-family: sans, tahoma;
+	margin: 3px;
+	padding: 3px;
+}
+.prpri input {
+	width: 10px;
+}
+.prarr input {
+	width: 20px;
+}
+.prnam {
+	font-weight: bold;
+}
+.prseq {
+	border: solid #808080 1px;
+}
+.prseq span.ex {
+	color: #a00000;
+	margin-left: 3px;
+	margin-right: 3px;
+}
+.prseq span.sl {
+	color: #00a000;
+	margin-left: 3px;
+	margin-right: 3px;
+}
+
+#processlist th {
+	border-bottom: solid black 1px;
+	font-family: sans, tahoma;
+}
+.license {
+	font-family: sans, tahoma;
+ 	font-size: 50%;
+	float: right;
+}
+
+</style>
+</head>
+
+<body>
+<script>
+$(function() {
+	$("#slower").button({icons:{primary:"ui-icon-minusthick"},
+			     text: false});
+	$("#playpause").button({icons:{primary:"ui-icon-play"},
+			     text: false});
+	$("#singlestep").button({icons:{primary:"ui-icon-seek-next"},
+			     text: false});
+	$("#faster").button({icons:{primary:"ui-icon-plusthick"},
+			     text: false});
+	$("#restart").button({icons:{primary:"ui-icon-refresh"},
+			     text: false});
+	// put initial input of processes here
+	setprocessview( [ ["A",[10,3,3],1,2],
+			["B",[5,2,1],2,0],
+			["C",[2,15,10],1, 1],
+			]);
+	sched_load();
+});
+</script>
+<h1>
+Scheduling Policies Animation
+</h1>
+
+<ul id="menu">
+	<li><a href="#">Choose policy</a>
+	    <ul id="policylist">
+	    </ul>
+	</li>
+</ul>
+
+<br/>
+
+<table>
+<tr><td>
+<h2>CPU</h2>
+<div id="cpu" class="ui-corner-all"> 
+</div>
+</td><td>
+<h2>Sleep Queue</h2>
+<div id="sleepqueue" class="ui-corner-all">
+</div>
+</td></tr></table>
+
+<div id="scoreboard">
+<div class="ui-corner-all"><b>Time:</b><br/> <span id="time">0</span></div>
+<div class="ui-corner-all"><b>Context switches:</b><br/> <span id="cswitch">0</span></div>
+<div class="ui-corner-all"><b>Waiting total:</b><br/> <span id="totalwait">0</span></div>
+<div class="ui-corner-all"><b>Maximum wait:</b><br/> <span id="maxwait">0</span><br/></div>
+</div>
+<div id="toolbar" class="ui-widget-header ui-corner-all">
+<button id="slower"></button><button id="playpause"></button>
+<button id="singlestep"></button><button id="faster"></button>
+<button id="restart"></button>
+</div>
+
+<h2 id="policytitle"></h2>
+<div id="policy" class="ui-corner-all">
+</div>
+<br/>
+<h2>History</h2>
+<table id="history">
+<thead>
+<th>t</th></thead>
+<tbody>
+</body>
+</table>
+<br/>
+<div id="logdiv" class="ui-corner-all">
+<h2>Events</h2>
+<pre id="logger">
+</pre>
+</div>
+
+
+<table id="processlist" class="ui-corner-all">
+<thead>
+<tr><th>P</th><th>Pattern</th><th>Pri</th><th>Arrive</th>
+</thead>
+</table>
+
+<div style="display:none" id="newprocs">
+</div>
+<br/>
+
+<div class="license"><span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/InteractiveResource" property="dct:title" rel="dct:type">by <a xmlns:cc="http://creativecommons.org/ns#" href="http://sehitoglu.web.tr/os/" property="cc:attributionName" rel="cc:attributionURL">Onur Tolga Sehitoglu</a>, licensed under <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons License (by-sa 4.0)</a>
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a>.
+</div>
+
+</body>

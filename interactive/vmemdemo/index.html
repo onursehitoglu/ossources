@@ -1,0 +1,40 @@
+<html>
+<head>
+<head>
+    <link rel="stylesheet" type="text/css" href="joint.css" />
+    <link rel="stylesheet" type="text/css" href="pagetable.css" />
+</head>
+<body>
+    <!-- dependencies -->
+    <script src="jquery.js"></script>
+    <script src="lodash.js"></script>
+    <script src="backbone.js"></script>
+    <script src="joint.js"></script>
+<script src="pagetable.js"></script>
+    <!-- content -->
+<h1>Virtual Memory/Demand Paging Demo</h1>
+<div>
+<p style="font-size: 10pt">First <b>Initialize </b> address space
+by  a ";" separated list of component lengths. i.e <tt>10;10;12</tt> defines a 32 bits  address space with
+two levels page tables. 12 bits offset. Then, enter addresses to access by CPU. Page tables will be allocated and the new setup will be shown.</p>
+<span id="actions">
+<input type="text" id="setup" /> <button id="setupbut" >Initialize</button>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<input type="text" disabled id="access"/><button disabled id="accessbut">Access</button>
+<script>
+$("#setupbut").click(function () {setupVM($('#setup').val()); 
+	$('#access').removeAttr('disabled');
+	$('#accessbut').removeAttr('disabled');});
+$("#accessbut").click(function () {va.access($('#access').val())});
+
+$("#setup").keydown(function (event) { if ( event.which === 13 ) { $("#setupbut").trigger('click'); return false;} return true;})
+$("#access").keydown(function (event) { if ( event.which === 13 ) { $("#accessbut").trigger('click'); return false;} return true;})
+</script>
+</div>
+
+</div>
+<div id="paper-html-elements"></div>
+
+</div>
+</body>
+</html>
