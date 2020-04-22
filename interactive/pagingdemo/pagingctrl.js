@@ -113,7 +113,7 @@ function mem_load(v, size) {
 		},
 		{name: "Least Recently Used (4 bits bitmap)",
 		 summary: "instead of a absolute timestamp uses an n-bit history of page accesses. History information is kept as n bits. With some periods (once on two page accesses in the example) history information is shifted right and most significant bit is set as referenced bit of the frame. Looking at bits of the history, we can see which of the last n accesses the frame is referenced. The smallest number gives us oldest page (since referenced bit is pushed to most significant bit). Therefore we can use the history info as the timestamp in LRU",
-		 get: function () { return LRUBITS(translation, 4, 2);}
+		 get: function () { return LRUBITS(translation, 4, 3);}
 		}];
 	/* create all menu items */
 	for (var i in plist) { 

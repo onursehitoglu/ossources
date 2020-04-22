@@ -331,6 +331,7 @@ LRUBITS = function (trans,nbits,period) {
 	p.accesspage  = function (frame, write) {
 			p._accesspage(frame, write);
 			if ((acccnt % period)  == period-1) {
+			$("#accessedit").fadeIn().fadeOut();
 				for (var i in frames) {
 					if (frames[i].vpage != undefined) {
 						if (frames[i].referenced) {
@@ -347,25 +348,26 @@ LRUBITS = function (trans,nbits,period) {
 	p._updateview = p.updateview;
 	p.updateview = function (frame) {
 			if (this.bits[frame.id] != undefined) 
-				p._updateview(frame,"b:" +
+				p._updateview(frame,"r:" + ((frame.referenced)?1:0) + "<br/>b:" +
 					 tobin(this.bits[frame.id]));
 			else
 				p._updateview(frame,"");
 		};
 	p.pagein = function (frame) {
-			this.bits[frame.id] = 1;
+			this.bits[frame.id] = 0;
 		};
 	p.evictpage = function	() {
-			var frame = frames[1];
+			var eframe = frames[1];
 			var earliest = 1;
 
 			for (var i in frames) {
-				if (this.bits[i] < this.bits[earliest]) {
+				if (( ! frames[i].referenced   && eframe.referenced) ||
+						(frames[i].referenced == eframe.referenced && this.bits[i] < this.bits[earliest])) {
 						earliest = i;
-						frame = frames[i];
+						eframe = frames[i];
 				}
 			}
-			return frame;
+			return eframe;
 		};
 	return p;
 }
