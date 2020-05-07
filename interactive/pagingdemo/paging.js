@@ -263,6 +263,7 @@ ENHANCED_CLOCK = function (size, trans) {
 				if (this.clockpos == this.start) {
 					// we made a cycle and no 0,0
 					if (this.candidate) {
+						this.updateview(frame);
 						frame = frames[this.candidate];
 						break;
 					} else {	// start next round
