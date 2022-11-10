@@ -11,7 +11,7 @@ void *philosopher(void *ip)
     int i=*(int *)ip;
     int z;
 
-    printf("philosopher %d thread id %u started\n", i,
+    printf("philosopher %d thread id %lu started\n", i,
               pthread_self()); 
     left=i==0?forks+4:forks+(i-1);
     right=forks+i;
