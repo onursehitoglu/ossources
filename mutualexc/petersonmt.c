@@ -19,7 +19,7 @@ void *increment(void *p)
 		x = x + 1;
 		punlock(n);
 	}
-	printf("%u finished\n", pthread_self());
+	printf("%lu finished\n", pthread_self());
 }
 
 int main() {

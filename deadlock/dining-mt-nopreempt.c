@@ -12,7 +12,7 @@ void *philosopher(void *ip)
 	int z;
     struct timespec timeout = { 1, 0}; // 1 second, 0 nano seconds
 
-	printf("philosopher %d thread id %u started\n", i,
+	printf("philosopher %d thread id %lu started\n", i,
   			pthread_self()); 
 	left=i==0?forks+4:forks+(i-1);
 	right=forks+i;
