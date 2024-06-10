@@ -16,7 +16,7 @@ void *philosopher(void *ip)
     left=i==0?forks+4:forks+(i-1);
     right=forks+i;
     srand(i+time(NULL));
-    for (z=0;z<100;z++) {
+    for (z=0;z<10000;z++) {
         usleep(rand()%10);
         // following breaks the circular dependency
         if ( i % 2 ) { // odd pick left then right
@@ -27,7 +27,7 @@ void *philosopher(void *ip)
             pthread_mutex_lock(left);
         }
         printf("Philosopher %d is eating %d\n",i,z);
-        usleep(10000); //rand()%30000+10000);
+        //usleep(10000); //rand()%30000+10000);
         printf("Philosopher %d finished eating %d\n",i,z);
         pthread_mutex_unlock(left);
         pthread_mutex_unlock(right);

@@ -4,7 +4,7 @@
 #include<unistd.h>
 #include<sched.h>
 
-#define INCR 1000000
+#define INCR 10000000
 
 int cmpxchg(int *ptr, int old, int new) {
 	/* compare eax (old) to *ptr

@@ -127,6 +127,10 @@ int main() {
 
     pthread_create(&ptr, NULL, producer, (void *) &pcmon);
     pthread_create(&ctr, NULL, consumer, (void *) &pcmon);
+    pthread_create(&ptr, NULL, producer, (void *) &pcmon);
+    pthread_create(&ctr, NULL, consumer, (void *) &pcmon);
+    pthread_create(&ptr, NULL, producer, (void *) &pcmon);
+    pthread_create(&ctr, NULL, consumer, (void *) &pcmon);
     pthread_join(ptr, NULL);
     pthread_join(ctr, NULL);
 

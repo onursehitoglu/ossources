@@ -46,7 +46,7 @@ void plock(int id) {
 	
 	flag[id] = 1;
 	turn = other;
-	//asm ("mfence");	// put a memory fence. instruction order is forced here
+	asm ("mfence");	// put a memory fence. instruction order is forced here
 	while (flag[other] && turn == other )  {
 	};
 }

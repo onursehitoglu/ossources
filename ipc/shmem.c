@@ -115,6 +115,7 @@ int main(int argc, char *argv[]) {
 			/* calculate rows i, i+nproc, i+2*nproc, ... */
 			for (j = i; j < r ; j += nproc) 
 				findrow(j, A, B, C, m, n, r);
+			sleep(20);
 			return 0;
 		}
 	}

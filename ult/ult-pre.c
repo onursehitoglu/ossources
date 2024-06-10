@@ -122,6 +122,10 @@ void sample(int id) {
 		if (i % (1000*1000*100) == 1) {
 			printf("id: %d, i: %d a: %d.\n", id, i, a);
 		}
+		if (i == 100000*id*id) {
+			printf("input %d\n", id);
+			scanf("%d\n", &a);
+		}
 		/* do something silly */
 		a = (a*321141231+7+id) % 155131;
 	}

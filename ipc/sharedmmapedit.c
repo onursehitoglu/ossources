@@ -56,7 +56,7 @@ void handler(int s)
     in order to reflect changes (possibly by another process */
 {
 	refreshscreen();
-	alarm(REFRESH);
+	ualarm(REFRESH,0);
 	/* some systems alarm handler is cleared, reset it */
 	signal(SIGALRM,handler);	
 	                                
@@ -85,6 +85,7 @@ int main(int argc, char *argv[])
 		return -2;
 	}
 	area=mmap(0,ROWS*COLS, PROT_READ|PROT_WRITE, MAP_SHARED,fd,0);
+	close(fd);
 
 	if (area==NULL) {
 		perror("mmap:");

@@ -158,8 +158,8 @@ $(function() {
 			 	.split(/[ \n]+/)
 				.filter(function (s) { return s.length > 1;})
 				.map(function (s) {
-					return [parseInt(s[0]),
-						(s[1].match(/w/i))?true:false];
+					return [parseInt(s),
+						(s.slice(-1).match(/w/i))?true:false];
 					})
 /*
 		return [

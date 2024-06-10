@@ -24,7 +24,7 @@ int writewait = 0;  // waiter count for write
 void start_read()
 {
     pthread_mutex_lock(&mutex);
-    if  (writecount || writewait) { // second for fairness
+    if  (writecount) { // { || writewait) { // second for fairness
         readwait++;
         pthread_cond_wait(&canread, &mutex);
         readwait--;
@@ -76,8 +76,8 @@ void *readerwriter(void *p)
     char *name = (char *) p;
 
     for (i = 0; i < 10; i++) {
-        usleep(WAIT/100);    /* wait for a while */
-        if (rand() % 2) { /* reader */
+        usleep(rand() % (WAIT/5000));    /* wait for a while */
+        if (rand() % 10 < 8 ) { /* reader */
             start_read();
             printf("%s started reading, %d\n", p, readcount);
             usleep(rand()% WAIT);
@@ -98,7 +98,7 @@ void *readerwriter(void *p)
 
 int main() {
     pthread_t ptr,ctr;
-    char *names[] = { "A", "B", "C", "D"};
+    char *names[] = { "A", "B", "C", "D", "E","F","G","H"};
     pthread_t tids[4];
 
     int i;

@@ -11,6 +11,15 @@
 
 sem_t *swrite, *smutex;
 int readcount = 0;
+int writecount = 0;
+
+// 0,0 -> 0,1 
+//           another writer/or reader-> block
+//           writer left -> 0,0
+//     -> 1,0 
+//           another writer -> block
+//           another reader -> >1,0
+//           reader left -> 0,0
 
 void start_read()
 {

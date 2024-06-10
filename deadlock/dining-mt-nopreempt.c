@@ -17,21 +17,22 @@ void *philosopher(void *ip)
 	left=i==0?forks+4:forks+(i-1);
 	right=forks+i;
 	srand(i+time(NULL));
-	for (z=0;z<100;z++) {
+	for (z=0;z<100000;z++) {
 //		usleep(rand()%10);
         while (1) {
 		    pthread_mutex_lock(left);
             // trylock is non-blocking version, returns error if not available
             // timelock is timeout version, first one makes busy wait, expensive
 		    /*if (pthread_mutex_trylock(right))  // fail */
-		    if (pthread_mutex_timedlock(right, &timeout))  // fail */
+		    if (pthread_mutex_timedlock(right, &timeout))  { // fail */ 
                 pthread_mutex_unlock(left);
-            else
+				printf("%d waited enough\n", i);
+            } else
                 break;  // we have both mutexes
 
         }
 		printf("Philosopher %d is eating %d\n",i,z);
-		usleep(10000); //rand()%30000+10000);
+		//usleep(10000); //rand()%30000+10000);
 		printf("Philosopher %d finished eating %d\n",i,z);
 		pthread_mutex_unlock(left);
 		pthread_mutex_unlock(right);
