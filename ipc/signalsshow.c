@@ -136,8 +136,8 @@ void handler(int signo, siginfo_t *info, void *p)
 	if (signo == SIGCHLD) 
 		printf(
                "	 si_status %d\n"   /* Exit value or signal */
-               "	 si_utime %d\n"    /* User time consumed */
-               "	 si_stime %d\n",   /* System time consumed */
+               "	 si_utime %ld\n"    /* User time consumed */
+               "	 si_stime %ld\n",   /* System time consumed */
                  info->si_status,
                  info->si_utime,
                  info->si_stime);

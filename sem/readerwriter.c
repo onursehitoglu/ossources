@@ -61,15 +61,15 @@ void *readerwriter(void *p)
         usleep(WAIT/100);    /* wait for a while */
         if (rand() % 2) {  /* reader */ 
             start_read();
-            printf("%s started reading, reader:%d\n", p, readcount);
+            printf("%s started reading, reader:%d\n", name, readcount);
             usleep(rand()% WAIT);
             finish_read();
-            printf("%s finished reading, reader:%d\n", p,readcount);
+            printf("%s finished reading, reader:%d\n", name,readcount);
         } else {  /* writer */
             start_write();
-            printf("%s started writing\n", p);
+            printf("%s started writing\n", name);
             usleep(rand()% WAIT);
-            printf("%s finished writing\n", p);
+            printf("%s finished writing\n", name);
             finish_write();
         }
     }
