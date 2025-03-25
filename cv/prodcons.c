@@ -4,6 +4,7 @@
 #include<semaphore.h>
 #include<fcntl.h>
 #include<errno.h>
+#include<unistd.h>
 
 #define MAX  10
 

@@ -22,7 +22,7 @@ int main() {
 		close(fd2[1]);
 		close(fd1[0]);
 		for (i=0;i<3;i++) {
-			fprintf(stderr,messages[i]);
+			fprintf(stderr,"%s",messages[i]);
 			fflush(stderr);
 			if (fgets(result,100,stdin)) {
 				printf("%s\n",result);
