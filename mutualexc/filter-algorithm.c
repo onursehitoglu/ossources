@@ -22,7 +22,7 @@ void *increment(void *p)
 		x = x + 1;
 		filterunlock(n);
 	}
-	printf("%u finished\n", pthread_self());
+	printf("%lu finished\n", pthread_self());
 }
 
 int level[NTHREADS];

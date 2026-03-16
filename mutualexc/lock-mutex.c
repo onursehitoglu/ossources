@@ -32,7 +32,7 @@ void *increment(void *p)
 		x = x + 1;
 		unlock(&lockvar);
 	}
-	printf("%d finished\n", pthread_self());
+	printf("%ld finished\n", pthread_self());
 }
 
 int main() {

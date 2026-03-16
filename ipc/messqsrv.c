@@ -58,7 +58,7 @@ int main() {
 	struct Request req;
 	long queueid,key;
 	queueid=ftok(APPPATH,0);
-	printf("opening/creating %x\n",queueid);
+	printf("opening/creating %lx\n",queueid);
 	if ((key=msgget(queueid,0664|IPC_CREAT))<0) {
 		perror("opening/creating queue");
 		exit(1);
